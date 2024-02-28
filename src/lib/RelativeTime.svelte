@@ -1,17 +1,15 @@
 <script lang="ts">
-	import { onDestroy } from 'svelte'
-	import { register, unregister } from './state'
+    import { onDestroy } from 'svelte'
+    import { register, unregister } from './state'
 
-	export let date: Date | number
-	export let locale: string
-	export let live = true
+    let {date, locale, live = true, class: klass = ''} = $props<{date: Date | number, locale: string, live?: boolean, class?: string}>();
 
-	let instance = new Object()
-	let text = ''
+    let instance = {};
+    let text = $state('');
 
-	register(instance, date, locale, live, value => (text = value))
+    register(instance, date, locale, live, value => (text = value));
 
-	onDestroy(() => unregister(instance))
+    onDestroy(() => unregister(instance));
 </script>
 
-<span class={$$props.class}>{text}</span>
+<span class={klass}>{text}</span>
